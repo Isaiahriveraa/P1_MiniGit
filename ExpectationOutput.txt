@@ -1,0 +1,125 @@
+Client Program & Visualization
+We have provided a client program that will allow you to test your Repository implementation by creating and manipulating repositories. The client program will directly call the methods you implement in your Repository class and will show you the resulting changes to the repositories. Click "Expand" below to see a sample execution of the client (user input is bold and underlined).
+
+
+Expand
+Welcome to the Mini-Git test client!
+Use this program to test your Mini-Git repository implemenation.
+Make sure to test all operations in all cases --
+some cases are particularly tricky.
+
+Available repositories: 
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: create repo1
+  New repository created: repo1 - No commits
+
+Available repositories: 
+repo1 - No commits
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: commit repo1
+Enter commit message: First commit!
+  New commit: 0
+
+Available repositories: 
+repo1 - Current head: 0 at 2023-10-25 at 06:53:42 AEDT: First commit!
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: commit repo1
+Enter commit message: Another commit.
+  New commit: 1
+
+Available repositories: 
+repo1 - Current head: 1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: history repo1
+How many commits back? 2
+1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+0 at 2023-10-25 at 06:53:42 AEDT: First commit!
+
+Available repositories: 
+repo1 - Current head: 1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: create repo2
+  New repository created: repo2 - No commits
+
+Available repositories: 
+repo2 - No commits
+repo1 - Current head: 1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: commit repo2
+Enter commit message: Commit the third
+  New commit: 2
+
+Available repositories: 
+repo2 - Current head: 2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+repo1 - Current head: 1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: commit repo1
+Enter commit message: Fourth commit
+  New commit: 3
+
+Available repositories: 
+repo2 - Current head: 2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+repo1 - Current head: 3 at 2023-10-25 at 06:54:05 AEDT: Fourth commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: history repo1
+How many commits back? 4
+3 at 2023-10-25 at 06:54:05 AEDT: Fourth commit
+1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+0 at 2023-10-25 at 06:53:42 AEDT: First commit!
+
+Available repositories: 
+repo2 - Current head: 2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+repo1 - Current head: 3 at 2023-10-25 at 06:54:05 AEDT: Fourth commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: head repo1
+3
+
+Available repositories: 
+repo2 - Current head: 2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+repo1 - Current head: 3 at 2023-10-25 at 06:54:05 AEDT: Fourth commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: commit repo1
+Enter commit message: one more commit
+  New commit: 4
+
+Available repositories: 
+repo2 - Current head: 2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+repo1 - Current head: 4 at 2023-10-25 at 06:54:13 AEDT: one more commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: drop repo1
+Enter ID to drop: 3
+  Successfully dropped 3
+
+Available repositories: 
+repo2 - Current head: 2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+repo1 - Current head: 4 at 2023-10-25 at 06:54:13 AEDT: one more commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: history repo1
+How many commits back? 3
+4 at 2023-10-25 at 06:54:13 AEDT: one more commit
+1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+0 at 2023-10-25 at 06:53:42 AEDT: First commit!
+
+Available repositories: 
+repo2 - Current head: 2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+repo1 - Current head: 4 at 2023-10-25 at 06:54:13 AEDT: one more commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: synchronize repo1
+Which repository would you like to synchronize into the given one? repo2
+
+Available repositories: 
+repo2 - No commits
+repo1 - Current head: 4 at 2023-10-25 at 06:54:13 AEDT: one more commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: history repo1
+How many commits back? 6
+4 at 2023-10-25 at 06:54:13 AEDT: one more commit
+2 at 2023-10-25 at 06:54:00 AEDT: Commit the third
+1 at 2023-10-25 at 06:53:46 AEDT: Another commit.
+0 at 2023-10-25 at 06:53:42 AEDT: First commit!
+
+Available repositories: 
+repo2 - No commits
+repo1 - Current head: 4 at 2023-10-25 at 06:54:13 AEDT: one more commit
+Operations: [create, head, history, commit, drop, synchronize, quit]
+Enter operation and repository: quit
