@@ -2,10 +2,110 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class Repository {
+    public Commit head;
 
     /**
      * TODO: Implement your code here.
      */
+    private String name;
+
+    public Repository(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        this.name = name;
+        head = null;
+    }
+
+    public String getRepoHead() {
+        if (head == null) {
+            return null;
+        }
+        return head.id;
+    }
+
+    public String toString() {
+        if (head == null) {
+            return name + " - No commits";
+        } else {
+            return name + " - Current head: " + head.toString();
+        }
+    }
+
+    public boolean contains(String targetId) {
+        if (targetId == null) {
+            throw new IllegalArgumentException("Target ID is null.");
+        }
+
+        Commit curr = head;
+        while (curr != null) {
+            if (curr.id.equals(targetId)) {
+                return true;
+            }
+            curr = curr.past;
+        }
+        return false;
+    }
+
+    public String getHistory(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException();
+        } else if  (head == null) {
+            return "";
+        }
+        String commitHistory = "";
+        Commit curr = head;
+        int numOfCommits = 0;
+
+        while (curr != null && numOfCommits < n) {
+            commitHistory += (curr.toString() + "\n");
+            curr = curr.past;
+            numOfCommits++;
+        }
+
+        return commitHistory;
+    }
+
+    public String commit(String message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Message is null!");
+        }
+        Commit newCommit = new Commit(message, head);
+        head = newCommit;
+        return head.id;
+    }
+
+    public boolean drop(String targetId) {
+        if (targetId == null) {
+            throw new IllegalArgumentException();
+        } else if (head == null)  {
+            return false;
+        } else if (head.id.equals(targetId)) {
+            head = head.past;
+            return true;
+        }
+
+        Commit curr = head;
+
+        while (curr.past != null) {
+            if (curr.past.id.equals(targetId)) {
+                curr.past = curr.past.past;
+                return true;
+            }
+            curr = curr.past;
+        }
+        return false;
+    }
+
+    public void synchronize(Repository other) {
+        if (other == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!other.head == null) {
+            
+        }
+    }
 
     /**
      * DO NOT MODIFY
