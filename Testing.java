@@ -1,10 +1,16 @@
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
-
+/*
+ *   This class contains JUnit tests for the Repository class, which models a simple
+ *   version control system. The tests cover commit history, dropping commits, and
+ *   repository synchronization, as well as helper methods for committing and verifying
+ *   commit history. 
+ */
 public class Testing {
     private Repository repo1;
     private Repository repo2;
+    private Repository repo3;
 
     // Occurs before each of the individual test cases
     // (creates new repos and resets commit ids)
@@ -12,12 +18,79 @@ public class Testing {
     public void setUp() {
         repo1 = new Repository("repo1");
         repo2 = new Repository("repo2");
+        repo3 = new Repository("repo3");
         Repository.Commit.resetIds();
     }
 
-    // TODO: Write your tests here!
+    @Test
+    @Timeout(1)
+    @DisplayName("getHistory")
+    public void getHistory() throws InterruptedException {
+        String[] commitMessages = new String[3];
+        commitMessages[0] = ("Start Commit");
+        commitMessages[1] = ("Second Commit");
+        commitMessages[2] = ("Thrid Commit");
+        commitAll(repo1, commitMessages);
+        testHistory(repo1, 1, commitMessages);
+    }
 
-    /////////////////////////////////////////////////////////////////////////////////
+    @Test
+    @Timeout(1)
+    @DisplayName("drop() head case & commit after a drop()")
+    public void testHeadDrop() throws InterruptedException {
+        commitAll(repo1, new String[]{"Repo 1"}); //id is 0
+        commitAll(repo2, new String[]{"Repo 2"}); //id is 1
+        commitAll(repo3, new String[]{"Repo 3"}); //id is 2
+        assertTrue(repo1.drop("0"));
+        assertTrue(repo2.drop("1"));
+        assertTrue(repo3.drop("2"));
+
+        assertEquals(repo2.getRepoSize(), 0);
+        assertEquals(repo3.getRepoHead(), null);
+        
+        //now the repo3 head is "3"
+        repo3.commit("3");
+        assertEquals(repo3.getRepoHead(), "3");
+        assertEquals(repo3.getRepoSize(), 1);
+
+    }
+
+    @Test
+    @Timeout(1)
+    @DisplayName("drop() (empty case)")
+    public void testDropEmpty() {
+        assertFalse(repo1.drop("123"));
+    }
+
+    @Test
+    @Timeout(1)
+    @DisplayName("synchronize() (one: [1, 2, 3, 4], two: [5, 6, 7] -> two: [8]," +
+        " three: [9, 10]) -> three: null")
+    public void testSynchronizeOne() throws InterruptedException {
+        // Initialize commit messages
+        commitAll(repo1, new String[]{"One", "Two", "Three", "Four"});
+        commitAll(repo2, new String[]{"Five", "Six", "Seven"});
+
+        commitAll(repo3, new String[]{"Nine", "Ten"});
+
+        assertEquals(4, repo1.getRepoSize());
+        assertEquals(3, repo2.getRepoSize());
+        repo1.synchronize(repo2);
+        repo2.commit("Eight");
+        
+        //repo 2 is 1 because it was emptied out before the eight message commit
+        assertEquals(1, repo2.getRepoSize());
+        // Synchronize repo2 into repo1
+        assertEquals(7, repo1.getRepoSize());
+        repo1.synchronize(repo3);
+        assertEquals(0, repo3.getRepoSize());
+        assertEquals(9, repo1.getRepoSize());
+        // Make sure the history of repo1 is correctly synchronized
+        testHistory(repo1, 9, new String[]{"One", "Two", "Three", "Four", "Five", "Six", "Seven",
+             "Nine", "Ten"});
+    }
+
+        /////////////////////////////////////////////////////////////////////////////////
     // PROVIDED HELPER METHODS (You don't have to use these if you don't want to!) //
     /////////////////////////////////////////////////////////////////////////////////
 
